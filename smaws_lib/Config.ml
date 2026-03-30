@@ -10,7 +10,7 @@ type t = {
 *)
 let defaultConfig () =
   let resolveRegion () =
-    let region = Sys.getenv_opt "AWS_DEFAULT_REGION" |> Option.value ~default:"us-east-1" in
+    let region = Sys.getenv_opt "AWS_REGION" |> Option.value ~default:"us-east-1" in
     region
   in
   let resolveAuth () =

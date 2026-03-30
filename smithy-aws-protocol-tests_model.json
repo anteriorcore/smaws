@@ -1032,7 +1032,7 @@
                 "AWS_SECRET_ACCESS_KEY": {
                     "target": "smithy.api#String"
                 },
-                "AWS_DEFAULT_REGION": {
+                "AWS_REGION": {
                     "target": "smithy.api#String"
                 },
                 "AWS_RETRY_MODE": {
