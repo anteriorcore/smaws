@@ -13,9 +13,7 @@ let makeUri ~(config : Config.t) ~(service : descriptor) =
       ~host:(Printf.sprintf "%s.%s.amazonaws.com" service.endpointPrefix (config.resolveRegion ()))
       ~path:"/" ()
   in
-  match config.endpoint with
-  | Some endpoint_config ->
-      endpoint_config.uri
-      |> Option.map (fun uri -> Uri.resolve "https" default_uri uri)
-      |> Option.value ~default:default_uri
-  | None -> default_uri
+  service.endpointPrefix |>
+    config.endpoint |>
+    Option.map (fun ep -> Uri.resolve "https" default_uri ep.Config.uri) |>
+    Option.value ~default:default_uri

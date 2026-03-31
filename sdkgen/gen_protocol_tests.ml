@@ -299,7 +299,7 @@ let make_config_expr (http_request_test : Trait.httpRequestTest) =
         {
           Config.dummy with
           endpoint =
-            Some { uri = Some ([%e "//" ^ host |> const_str] |> Uri.of_string); headers = None };
+            Fun.const (Some { Smaws_Lib.Config.uri = [%e "//" ^ host |> const_str] |> Uri.of_string; headers = None });
         }]
   | None -> [%expr Config.dummy]
 

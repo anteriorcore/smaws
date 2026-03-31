@@ -125,11 +125,13 @@ let aws_json11_endpoint_trait () =
            {
              Config.dummy with
              endpoint =
-               (Some
-                  {
-                    uri = (Some ("//example.com" |> Uri.of_string));
-                    headers = None
-                  })
+               (Fun.const
+                  (Some
+                     {
+                       Smaws_Lib.Config.uri =
+                         ("//example.com" |> Uri.of_string);
+                       headers = None
+                     }))
            } in
          let ctx = Smaws_Lib.Context.make ~config ~http_type () in
          let input : Smaws_Lib.Smithy_api.Types.unit_ = () in
@@ -178,11 +180,13 @@ let aws_json11_endpoint_trait_with_host_label () =
            {
              Config.dummy with
              endpoint =
-               (Some
-                  {
-                    uri = (Some ("//example.com" |> Uri.of_string));
-                    headers = None
-                  })
+               (Fun.const
+                  (Some
+                     {
+                       Smaws_Lib.Config.uri =
+                         ("//example.com" |> Uri.of_string);
+                       headers = None
+                     }))
            } in
          let ctx = Smaws_Lib.Context.make ~config ~http_type () in
          let input : Types.host_label_input = { label = "bar" } in
@@ -238,11 +242,13 @@ let aws_json11_host_with_path () =
            {
              Config.dummy with
              endpoint =
-               (Some
-                  {
-                    uri = (Some ("//example.com/custom" |> Uri.of_string));
-                    headers = None
-                  })
+               (Fun.const
+                  (Some
+                     {
+                       Smaws_Lib.Config.uri =
+                         ("//example.com/custom" |> Uri.of_string);
+                       headers = None
+                     }))
            } in
          let ctx = Smaws_Lib.Context.make ~config ~http_type () in
          let input : Smaws_Lib.Smithy_api.Types.unit_ = () in
