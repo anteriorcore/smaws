@@ -14,7 +14,7 @@ let
     nativeBuildInputs = 
       lib.optionals release-mode 
       [];
-    buildInputs =with ocamlPackages; [ ocaml-lsp merlin ocamlformat utop ]; 
+    buildInputs =with ocamlPackages; [ ocaml-lsp merlin ocamlformat utop opam ]; 
   }).overrideAttrs (o: {
     propagatedBuildInputs = lib.filter 
       (drv:
