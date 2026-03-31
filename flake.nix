@@ -30,6 +30,8 @@
           // {
             default = self.packages.${system}.smaws-gen;
           };
+        # Ensure that at least every package builds.
+        checks = packages;
         devShells = {
           default = pkgs.callPackage ./nix/shell.nix { inherit packages; };
           release = pkgs.callPackage ./nix/shell.nix {
