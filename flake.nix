@@ -23,10 +23,13 @@
         );
       in
       rec {
-        packages = nixpkgs.lib.filterAttrs (_: nixpkgs.lib.isDerivation) (
-          pkgs.callPackage ./nix { nix-filter = nix-filter.lib; }
-        );
-        defaultPackage = packages.smaws-gen;
+        packages =
+          nixpkgs.lib.filterAttrs (_: nixpkgs.lib.isDerivation) (
+            pkgs.callPackage ./nix { nix-filter = nix-filter.lib; }
+          )
+          // {
+            default = self.packages.${system}.smaws-gen;
+          };
         devShells = {
           default = pkgs.callPackage ./nix/shell.nix { inherit packages; };
           release = pkgs.callPackage ./nix/shell.nix {
