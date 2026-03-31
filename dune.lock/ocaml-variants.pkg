@@ -1,0 +1,74 @@
+(version 5.3.0+BER)
+
+(install
+ (progn
+  (run %{make} -i install)
+  (run %{make} -C ber-metaocaml-153 install install.opt)))
+
+(build
+ (progn
+  (run
+   ./configure
+   --prefix=%{prefix}
+   --docdir=%{doc}/ocaml
+   -C
+   (when %{pkg:ocaml-option-afl:installed} --with-afl)
+   (when
+    %{pkg:ocaml-option-bytecode-only:installed}
+    --disable-native-compiler)
+   (when
+    %{pkg:ocaml-option-no-flat-float-array:installed}
+    --disable-flat-float-array)
+   (when %{pkg:ocaml-option-flambda:installed} --enable-flambda)
+   (when %{pkg:ocaml-option-fp:installed} --enable-frame-pointers)
+   (when %{pkg:ocaml-option-no-compression:installed} --without-zstd)
+   (when %{pkg:ocaml-option-tsan:installed} --enable-tsan)
+   (when
+    (and_absorb_undefined_var
+     (not %{pkg:ocaml-option-32bit:installed})
+     (not %{pkg:ocaml-option-musl:installed})
+     true)
+    CC=cc)
+   (when
+    (and_absorb_undefined_var %{pkg:ocaml-option-tsan:installed} true)
+    CC=clang)
+   (when
+    (and_absorb_undefined_var %{pkg:ocaml-option-musl:installed} true)
+    CC=musl-gcc)
+   (when
+    (and_absorb_undefined_var %{pkg:ocaml-option-musl:installed} true)
+    "CFLAGS=-Os -mno-outline-atomics")
+   (when
+    (or_absorb_undefined_var
+     %{pkg:ocaml-option-leak-sanitizer:installed}
+     false)
+    LDFLAGS=-Wl,--no-as-needed,-ldl)
+   (when
+    %{pkg:ocaml-option-leak-sanitizer:installed}
+    "CC=gcc -ldl -fsanitize=leak -fno-omit-frame-pointer -O1 -g")
+   (when
+    (and_absorb_undefined_var
+     %{pkg:ocaml-option-address-sanitizer:installed}
+     true)
+    "CC=clang -fsanitize=address -fno-omit-frame-pointer -O1 -g")
+   (when
+    (and_absorb_undefined_var %{pkg:ocaml-option-32bit:installed} true)
+    "CC=gcc -Wl,-read_only_relocs,suppress -arch i386 -m32")
+   (when
+    (and_absorb_undefined_var %{pkg:ocaml-option-musl:installed} true)
+    "ASPP=musl-gcc -c")
+   (when
+    (and_absorb_undefined_var %{pkg:ocaml-option-32bit:installed} true)
+    --host=i386-apple-darwin13.2.0)
+   (when %{pkg:ocaml-option-static:installed} LIBS=-static)
+   --disable-warn-error)
+  (run %{make} -j%{jobs})))
+
+(source
+ (fetch
+  (url https://github.com/metaocaml/ber-metaocaml/archive/BER-N153.tar.gz)
+  (checksum
+   sha256=307d0bc9a6d1fe9164956a882622980829a4aee7968744dae279a22e1a5c3ae9)))
+
+(exported_env
+ (= CAML_LD_LIBRARY_PATH "\%{lib}%/stublibs"))
