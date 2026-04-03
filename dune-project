@@ -4,8 +4,6 @@
 
 (name smaws)
 
-(generate_opam_files true)
-
 (package
  (name smaws-gen)
  (allow_empty)
