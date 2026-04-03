@@ -1,0 +1,19 @@
+(version 0.3.0)
+
+(build
+ (all_platforms
+  ((action
+    (progn
+     (when %{pkg-self:dev} (run dune subst))
+     (run dune build -p %{pkg-self:name} -j %{jobs} @install))))))
+
+(depends
+ (all_platforms
+  (dune ocaml ssl eio)))
+
+(source
+ (fetch
+  (url
+   https://github.com/anmonteiro/eio-ssl/releases/download/0.3.0/eio-ssl-0.3.0.tbz)
+  (checksum
+   sha512=2f93ba3955b5d9c5c3b8248d83f42f058e60c833a11dbf4dd0a0bf7b219fe68c531b00763c88bd24a3884d82030b1401eb141c6cd26b722843fd74eb1f68374e)))
