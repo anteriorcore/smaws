@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "aws-api-models": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1751566088,
+        "narHash": "sha256-zzI3TBk4joVDSElqI5ziajVwdE4g3RytlLvQOlzphKA=",
+        "owner": "aws",
+        "repo": "api-models-aws",
+        "rev": "896693ac2e1c0efd9d03488109601e0c66ba7d35",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aws",
+        "repo": "api-models-aws",
+        "rev": "896693ac2e1c0efd9d03488109601e0c66ba7d35",
+        "type": "github"
+      }
+    },
     "devshell": {
       "inputs": {
         "nixpkgs": [
@@ -467,6 +484,7 @@
     },
     "root": {
       "inputs": {
+        "aws-api-models": "aws-api-models",
         "dune2nix": "dune2nix",
         "flake-parts": "flake-parts_2",
         "nixpkgs": "nixpkgs_3",
