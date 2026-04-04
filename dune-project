@@ -17,7 +17,7 @@
  (bug_reports https://github.com/chris-armstrong/smaws/issues)
  (source
   (github chris-armstrong/smaws))
- (license MIT)
+ (license GPL-3.0-only)
  (depends
   (ocaml
    (>= "5.0"))
@@ -60,7 +60,7 @@
  (documentation https://chris-armstrong.github.io/smaws/smaws-lib)
  (source
   (github chris-armstrong/smaws))
- (license MIT)
+ (license GPL-3.0-only)
  (depends
   (ocaml
    (>= "5.0"))
@@ -107,7 +107,7 @@
  (documentation https://chris-armstrong.github.io/smaws/smaws-clients)
  (source
   (github chris-armstrong/smaws))
- (license MIT)
+ (license GPL-3.0-only)
  (depends
   (ocaml
    (>= "5.0"))

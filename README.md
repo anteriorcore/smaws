@@ -99,8 +99,16 @@ Note that we do not have any compliance suites to test our implementations for e
 
 See the [Developers Guide](DEVELOPERS.md)
 
-## Licence
+## Copyright & License
+
+### Original Work ("Upstream")
 
 Copyright (C) Christopher Armstrong 2024
 
-MIT Licence, see [LICENCE.md](LICENCE.md)
+Source code and license for original work can be found at [github.com/chris-armstrong/smaws](https://github.com/chris-armstrong/smaws).
+
+### Anterior’s Contributions ("Fork")
+
+Copyright © Anterior <tech@anterior.com> 2026
+
+See the [LICENSE](./LICENSE) file for license of contributions by Anterior
