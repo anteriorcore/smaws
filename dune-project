@@ -40,7 +40,7 @@
    (>= "0.7.0"))
   ppx_compare
   (ppxlib
-   (>= "0.36.0"))
+   (and (< "0.37.0") (>= "0.36.0")))
   (alcotest :with-test)
   (eio_main :with-dev-setup)
   (odoc :with-doc)))
