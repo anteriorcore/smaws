@@ -1,44 +1,49 @@
 {
   description = "smaws";
 
-  inputs.nix-filter.url = "github:numtide/nix-filter";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.nixpkgs.inputs.flake-utils.follows = "flake-utils";
-  inputs.nixpkgs.url = "github:anmonteiro/nix-overlays";
+  inputs = {
+    dune2nix.url = "github:anteriorcore/dune2nix";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    systems.url = "github:nix-systems/default";
+  };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      flake-utils,
-      nix-filter,
-    }:
-    flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        pkgs = nixpkgs.legacyPackages.${system}.extend (
-          self: super: {
-            ocamlPackages = super.ocaml-ng.ocamlPackages_5_2;
-          }
-        );
-      in
-      rec {
-        packages =
-          nixpkgs.lib.filterAttrs (_: nixpkgs.lib.isDerivation) (
-            pkgs.callPackage ./nix { nix-filter = nix-filter.lib; }
-          )
-          // {
-            default = self.packages.${system}.smaws-gen;
-          };
-        # Ensure that at least every package builds.
-        checks = packages;
-        devShells = {
-          default = pkgs.callPackage ./nix/shell.nix { inherit packages; };
-          release = pkgs.callPackage ./nix/shell.nix {
-            inherit packages;
-            release-mode = true;
-          };
+    { flake-parts, ... }@inputs:
+    let
+      flakeMod =
+        { lib, ... }:
+        {
+          perSystem =
+            { pkgs, system, ... }:
+            let
+              dune2nix = pkgs.callPackage inputs.dune2nix.lib.dune2nix { };
+            in
+            {
+              _module.args.pkgs = import inputs.nixpkgs {
+                inherit system;
+                overlays = [
+                  inputs.dune2nix.overlays.dune
+                ];
+              };
+              packages.default = dune2nix.mkDuneProject {
+                src = ./.;
+                nativeBuildInputs = [
+                  pkgs.pkg-config
+                ];
+                buildInputs = [
+                  pkgs.openssl
+                ];
+                doCheck = true;
+                meta.license = lib.licenses.gpl3Only;
+              };
+            };
         };
-      }
-    );
+    in
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = import inputs.systems;
+      imports = [
+        flakeMod
+      ];
+    };
 }
