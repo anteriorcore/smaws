@@ -1,7 +1,12 @@
 { inputs, lib, ... }:
 {
   perSystem =
-    { self', pkgs, system, ... }:
+    {
+      self',
+      pkgs,
+      system,
+      ...
+    }:
     let
       dune2nix = pkgs.callPackage inputs.dune2nix.lib.dune2nix { };
     in
@@ -26,5 +31,6 @@
         doCheck = true;
         meta.license = lib.licenses.gpl3Only;
       };
+      checks = self'.packages;
     };
 }
