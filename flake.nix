@@ -23,7 +23,9 @@
         );
       in
       rec {
-        packages = pkgs.callPackage ./nix { nix-filter = nix-filter.lib; };
+        packages = nixpkgs.lib.filterAttrs (_: nixpkgs.lib.isDerivation) (
+          pkgs.callPackage ./nix { nix-filter = nix-filter.lib; }
+        );
         defaultPackage = packages.smaws-gen;
         devShells = {
           default = pkgs.callPackage ./nix/shell.nix { inherit packages; };
