@@ -112,3 +112,12 @@
   smaws-lib
   (alcotest :with-test)
   (odoc :with-doc)))
+
+;; https://github.com/ocaml/dune/issues/12135
+(package
+ (name smaws-dev-tools-synthetic)
+ (allow_empty)
+ (description "Synthetic package for ensuring dune pkg lock includes the dev tools")
+ (depends
+  eio_main
+  ppx_deriving))
