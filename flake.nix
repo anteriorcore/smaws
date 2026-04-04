@@ -11,51 +11,20 @@
       url = "github:aws/api-models-aws/896693ac2e1c0efd9d03488109601e0c66ba7d35";
       flake = false;
     };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     { flake-parts, ... }@inputs:
-    let
-      flakeMod =
-        { lib, ... }:
-        {
-          perSystem =
-            { pkgs, system, ... }:
-            let
-              dune2nix = pkgs.callPackage inputs.dune2nix.lib.dune2nix { };
-            in
-            {
-              _module.args.pkgs = import inputs.nixpkgs {
-                inherit system;
-                overlays = [
-                  inputs.dune2nix.overlays.dune
-                ];
-              };
-              packages.default = dune2nix.mkDuneProject {
-                src = ./.;
-                awsApiModels = inputs.aws-api-models;
-                postPatch = ''
-                  if [[ ! -d api-models-aws ]]; then
-                    cp -r --no-preserve=mode,ownership "$awsApiModels" api-models-aws
-                  fi
-                '';
-                nativeBuildInputs = with pkgs; [
-                  pkg-config
-                  writableTmpDirAsHomeHook
-                ];
-                buildInputs = with pkgs; [
-                  openssl
-                ];
-                doCheck = true;
-                meta.license = lib.licenses.gpl3Only;
-              };
-            };
-        };
-    in
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = import inputs.systems;
       imports = [
-        flakeMod
+        ./nix/misc.nix
+        ./nix/treefmt.nix
+        inputs.treefmt-nix.flakeModule
       ];
     };
 }
