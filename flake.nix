@@ -6,12 +6,21 @@
   inputs.nixpkgs.inputs.flake-utils.follows = "flake-utils";
   inputs.nixpkgs.url = "github:anmonteiro/nix-overlays";
 
-  outputs = { self, nixpkgs, flake-utils, nix-filter }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      nix-filter,
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
-        pkgs = nixpkgs.legacyPackages.${system}.extend (self: super: {
-          ocamlPackages = super.ocaml-ng.ocamlPackages_5_2;
-        });
+        pkgs = nixpkgs.legacyPackages.${system}.extend (
+          self: super: {
+            ocamlPackages = super.ocaml-ng.ocamlPackages_5_2;
+          }
+        );
       in
       rec {
         packages = pkgs.callPackage ./nix { nix-filter = nix-filter.lib; };
@@ -23,5 +32,6 @@
             release-mode = true;
           };
         };
-      });
+      }
+    );
 }
