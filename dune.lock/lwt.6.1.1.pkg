@@ -1,0 +1,28 @@
+(version 6.1.1)
+
+(build
+ (all_platforms
+  ((action
+    (progn
+     (when %{pkg-self:dev} (run dune subst))
+     (run
+      dune
+      exec
+      -p
+      %{pkg-self:name}
+      src/unix/config/discover.exe
+      --
+      --save
+      --use-libev
+      false)
+     (run dune build -p %{pkg-self:name} -j %{jobs} @install))))))
+
+(depends
+ (all_platforms
+  (dune ocaml cppo dune-configurator ocplib-endian base-threads base-unix)))
+
+(source
+ (fetch
+  (url https://github.com/ocsigen/lwt/archive/refs/tags/6.1.1.tar.gz)
+  (checksum
+   sha512=3c92e3359ee742b9647dc8392b71c2d725b23549327aaab772d48d016d7abb8f0d710d0e9bdc0fd2406e0cbc4ea182cd134446fe4356538795d173cc6a9e0a27)))

@@ -120,4 +120,5 @@
  (description "Synthetic package for ensuring dune pkg lock includes the dev tools")
  (depends
   eio_main
-  ppx_deriving))
+  ppx_deriving
+  utop))

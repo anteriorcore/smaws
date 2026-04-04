@@ -1,0 +1,19 @@
+(version 3.3.3)
+
+(build
+ (all_platforms
+  ((action
+    (progn
+     (when %{pkg-self:dev} (run dune subst))
+     (run dune build -p %{pkg-self:name} -j %{jobs} @install))))))
+
+(depends
+ (all_platforms
+  (dune ocaml logs lwt lwt_react mew_vi react zed)))
+
+(source
+ (fetch
+  (url
+   https://github.com/ocaml-community/lambda-term/archive/refs/tags/3.3.3.tar.gz)
+  (checksum
+   sha512=34be68128d82b7219a963ca7442948842fc26ff9dbd3be9eb76092be3a4cf7cb19bad043fdeed7f5607178375c472dc51c6eebea82145541836e7883320d342c)))
